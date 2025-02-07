@@ -164,7 +164,7 @@
 
     <body class='container-fluid'>
         <div class='eventHeader row'>
-            <div class='col-sm-4 offset-sm-4'>
+            <div class='col-4 offset-4'>
                 <input id='eventNameInput' placeholder='Event Name' onchange='updateName(this);'>
                 <!-- <button onclick='enableNameInput();'>Edit Name</button> -->
             </div>
@@ -172,14 +172,14 @@
         
         <div id='stage0Div' class='stageDiv' style='display: none'>
             <div class='stageHeader row'>
-                <div class='col-sm-1'>
+                <div class='col-1'>
                     <button class='btn btn-default' data-bs-toggle='collapse' data-bs-target='#stage0BattlesDiv'>v</button>
                 </div>
-                <div class='col-sm-8'>
+                <div class='col-8'>
                     <h3>Stage 1</h3>
                 </div>
-                <div class='col-sm-3'>
-                    <button class='btn btn-danger' onclick='removeStage(this.parentNode.parentNode.parentNode);'>Remove Stage</button>
+                <div class='col-3'>
+                    <button class='btn btn-sm btn-danger' onclick='removeStage(this.parentNode.parentNode.parentNode);'>Remove Stage</button>
                 </div>
             </div>
             
@@ -187,24 +187,24 @@
                 <div id='battle0ADiv' class='battleDiv collapse show'>
                     <div class='battleHeader'>
                         <div class='row'>
-                            <div class='col-sm-1'>
+                            <div class='col-1'>
                                 <button class='btn btn-default' data-bs-toggle='collapse' data-bs-target='#battle0ARoundsDiv'>v</button>
                             </div>
-                            <div class='col-sm-5'>
+                            <div class='col-5'>
                                 <h4>Battle A</h4>
                             </div>
-                            <div class='col-sm-3'>
-                                <button class='btn btn-warning' onclick='resetBattle(this.parentNode.parentNode.parentNode.parentNode);'>Reset Battle</button>
+                            <div class='col-3'>
+                                <button class='btn btn-sm btn-warning' onclick='resetBattle(this.parentNode.parentNode.parentNode.parentNode);'>Reset Battle</button>
                             </div>
-                            <div class='col-sm-3'>
-                                <button class='btn btn-danger' onclick='removeBattle(this.parentNode.parentNode.parentNode.parentNode);'>Remove Battle</button>
+                            <div class='col-3'>
+                                <button class='btn btn-sm btn-danger' onclick='removeBattle(this.parentNode.parentNode.parentNode.parentNode);'>Remove Battle</button>
                             </div>
                         </div>
                         <div class='roundCompetitors row'>
-                            <div class='col-sm-6'>
+                            <div class='col-6'>
                                 <input placeholder='left'>
                             </div>
-                            <div class='col-sm-6'>
+                            <div class='col-6'>
                                 <input placeholder='right'>
                             </div>
                         </div>
@@ -219,17 +219,17 @@
                             </div>
                         </div>
                         <div id='round0A1Div' class='roundDiv row'>
-                            <div class='col-sm-8'>
+                            <div class='col-8'>
                                 <h6>Round 1</h6>
                                 <p>0</p>
                                 <input type='range' min='-3' max='3' oninput='updateSliderDisplay(this);'>
                             </div>
-                            <div class='col-sm-4'>
-                                <button class='btn btn-warning' onclick='removeRound(this.parentNode.parentNode);'>Remove Round</button>
+                            <div class='col-4'>
+                                <button class='btn btn-sm btn-warning' onclick='removeRound(this.parentNode.parentNode);'>Remove Round</button>
                             </div>
                         </div>
                         <div>
-                            <button class='btn btn-primary' onclick='addRound(this.parentNode);'>Add Round</button>
+                            <button class='btn btn-sm btn-primary' onclick='addRound(this.parentNode);'>Add Round</button>
                         </div>
                         <div class='voteDiv'>
                             <h5>0</h5>
@@ -242,21 +242,21 @@
                     </div>
                 </div>
                 <div class=''>
-                    <button class='btn btn-primary' onclick='addBattle(this.parentNode);'>Add Battle</button>
+                    <button class='btn btn-sm btn-primary' onclick='addBattle(this.parentNode);'>Add Battle</button>
                 </div>
             </div>
         </div>
 
         <div id='stage1Div' class='stageDiv'>
             <div class='stageHeader row'>
-                <div class='col-sm-1'>
+                <div class='col-1'>
                     <button class='btn btn-default' data-bs-toggle='collapse' data-bs-target='#stage1BattlesDiv'>v</button>
                 </div>
-                <div class='col-sm-8'>
+                <div class='col-8'>
                     <h3>Stage 1</h3>
                 </div>
-                <div class='col-sm-3'>
-                    <button class='btn btn-danger' onclick='removeStage(this.parentNode.parentNode.parentNode);'>Remove Stage</button>
+                <div class='col-3'>
+                    <button class='btn btn-sm btn-danger' onclick='removeStage(this.parentNode.parentNode.parentNode);'>Remove Stage</button>
                 </div>
             </div>
 
@@ -264,24 +264,24 @@
                 <div id='battle1ADiv' class='battleDiv collapse show'>
                     <div class='battleHeader'>
                         <div class='row'>
-                            <div class='col-sm-1'>
+                            <div class='col-1'>
                                 <button class='btn btn-default' data-bs-toggle='collapse' data-bs-target='#battle1ARoundsDiv'>v</button>
                             </div>
-                            <div class='col-sm-5'>
+                            <div class='col-5'>
                                 <h4>Battle A</h4>
                             </div>
-                            <div class='col-sm-3'>
-                                <button class='btn btn-warning' onclick='resetBattle(this.parentNode.parentNode.parentNode.parentNode);'>Reset Battle</button>
+                            <div class='col-3'>
+                                <button class='btn btn-sm btn-warning' onclick='resetBattle(this.parentNode.parentNode.parentNode.parentNode);'>Reset Battle</button>
                             </div>
-                            <div class='col-sm-3'>
-                                <button class='btn btn-danger' onclick='removeBattle(this.parentNode.parentNode.parentNode.parentNode);'>Remove Battle</button>
+                            <div class='col-3'>
+                                <button class='btn btn-sm btn-danger' onclick='removeBattle(this.parentNode.parentNode.parentNode.parentNode);'>Remove Battle</button>
                             </div>
                         </div>
                         <div class='roundCompetitors row'>
-                            <div class='col-sm-6'>
+                            <div class='col-6'>
                                 <input placeholder='left'>
                             </div>
-                            <div class='col-sm-6'>
+                            <div class='col-6'>
                                 <input placeholder='right'>
                             </div>
                         </div>
@@ -296,17 +296,17 @@
                             </div>
                         </div>
                         <div id='round1A1Div' class='roundDiv row'>
-                            <div class='col-sm-8'>
+                            <div class='col-8'>
                                 <h6>Round 1</h6>
                                 <p>0</p>
                                 <input type='range' min='-3' max='3' oninput='updateSliderDisplay(this);'>
                             </div>
-                            <div class='col-sm-4'>
-                                <button class='btn btn-warning' onclick='removeRound(this.parentNode.parentNode);'>Remove Round</button>
+                            <div class='col-4'>
+                                <button class='btn btn-sm btn-warning' onclick='removeRound(this.parentNode.parentNode);'>Remove Round</button>
                             </div>
                         </div>
                         <div>
-                            <button class='btn btn-primary' onclick='addRound(this.parentNode);'>Add Round</button>
+                            <button class='btn btn-sm btn-primary' onclick='addRound(this.parentNode);'>Add Round</button>
                         </div>
                         <div class='voteDiv'>
                             <h5>0</h5>
@@ -319,13 +319,13 @@
                     </div>
                 </div>
                 <div class=''>
-                    <button class='btn btn-primary' onclick='addBattle(this.parentNode);'>Add Battle</button>
+                    <button class='btn btn-sm btn-primary' onclick='addBattle(this.parentNode);'>Add Battle</button>
                 </div>
             </div>
         </div>
 
         <div class=''>
-            <button class='btn btn-primary' onclick='addStage(this.parentNode);'>Add Stage</button>
+            <button class='btn btn-sm btn-primary' onclick='addStage(this.parentNode);'>Add Stage</button>
         </div>
     </body>
 
