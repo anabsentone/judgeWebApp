@@ -46,6 +46,17 @@
                 padding: 10px;
                 background-color: rgb(202, 202, 202);
             }
+
+            h5 {
+                width: 100%;
+                margin: auto;
+                text-align: center;
+            }
+
+            div:has(button) {
+                text-align: center;
+            }
+
          </style>
          <script>
             var eventJSON = {
@@ -235,7 +246,7 @@
                             </div>
                         </div>
                         <div>
-                            <button class='btn btn-sm btn-primary' onclick='addRound(this.parentNode);'>+</button>
+                            <button class='btn btn-sm btn-primary' onclick='addRound(this.parentNode);'>+ Round</button>
                         </div>
                         <div class='voteDiv'>
                             <h5>0</h5>
@@ -248,7 +259,7 @@
                     </div>
                 </div>
                 <div class=''>
-                    <button class='btn btn-sm btn-primary' onclick='addBattle(this.parentNode);'>+</button>
+                    <button class='btn btn-sm btn-primary' onclick='addBattle(this.parentNode);'>+ Battle</button>
                 </div>
             </div>
         </div>
@@ -312,7 +323,7 @@
                             </div>
                         </div>
                         <div>
-                            <button class='btn btn-sm btn-primary' onclick='addRound(this.parentNode);'>+</button>
+                            <button class='btn btn-sm btn-primary' onclick='addRound(this.parentNode);'>+ Round</button>
                         </div>
                         <div class='voteDiv'>
                             <h5>0</h5>
@@ -325,13 +336,13 @@
                     </div>
                 </div>
                 <div class=''>
-                    <button class='btn btn-sm btn-primary' onclick='addBattle(this.parentNode);'>+</button>
+                    <button class='btn btn-sm btn-primary' onclick='addBattle(this.parentNode);'>+ Battle</button>
                 </div>
             </div>
         </div>
 
         <div class=''>
-            <button class='btn btn-sm btn-primary' onclick='addStage(this.parentNode);'>+</button>
+            <button class='btn btn-sm btn-primary' onclick='addStage(this.parentNode);'>+ Stage</button>
         </div>
     </body>
 
