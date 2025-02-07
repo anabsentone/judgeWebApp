@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+         <meta charset='UTF-8'>
+         <meta name='viewport' content='width=device-width, initial-scale=1'>
+         <!-- <link rel='shortcut icon' href='images/logo.png'> -->
+         <!-- <link rel='stylesheet' type='text/css' href='css/html5reset.css'> -->
+         
+         <!-- Bootstrap 5.3 https://getbootstrap.com/docs/5.3/getting-started/introduction -->
+         <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH' crossorigin='anonymous'>
+         <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js' integrity='sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz' crossorigin='anonymous'></script>
+         
+         <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
+         <title>Judge Web App</title>
+         <style>
+            body {
+                margin: 15px;
+                background-color: darkslategray;
+            }
+
+            .stageDiv {
+                margin: 10px;
+                padding: 5px;
+                background-color: gray;
+            }
+
+            .battleDiv {
+                margin: 10px;
+                padding: 10px;
+                background-color: rgb(149, 149, 149);
+            }
+
+            .battleDiv input {
+                width: 100%;
+                margin: auto;
+            }
+
+            .roundDiv {
+                margin: 5px;
+                padding: 10px;
+                background-color: rgb(202, 202, 202);
+            }
+         </style>
+         <script>
+            var eventJSON = {
+                eventName: '',
+                eventFormat: '',
+                numJudges: '',
+                numBattles: '',
+            };
+            
+            function updateName(eventNameInput) {
+                eventJSON['eventName'] = eventNameInput.value;
+                // eventNameInput.disabled = true;
+                console.log(eventJSON);
+            }
+            function enableNameInput() {
+                eventNameInput.disabled = false;
+                console.log('reenabled');
+            }
+
+            function updateSliderDisplay(slider) {
+                slider.previousElementSibling.innerText = slider.value;
+                var roundSliders = slider.parentNode.parentNode.parentNode.getElementsByTagName('input');
+                var roundScore = 0;
+                var battleScore = 0;
+                for (var i = 1; i < roundSliders.length - 1; i++) {
+                    roundScore = parseInt(roundSliders[i].value);
+                    battleScore += roundScore;
+                    if (roundScore < 0) {
+                        battleScore -= 0.5;
+                    }
+                    else if (roundScore > 0) {
+                        battleScore += 0.5;
+                    }
+                }
+                var battleDiv = slider.parentNode.parentNode.parentNode.parentNode;
+                battleDiv.getElementsByTagName('h5')[0].innerText = battleScore;
+                if (battleScore < 0) {
+                    battleDiv.getElementsByTagName('h5')[1].innerText = battleDiv.getElementsByTagName('input')[0].value;
+                }
+                else if (battleScore > 0) {
+                    battleDiv.getElementsByTagName('h5')[1].innerText = battleDiv.getElementsByTagName('input')[1].value;
+                }
+                else if (battleScore == 0) {
+                    battleDiv.getElementsByTagName('h5')[1].innerText = 'Tie';
+                }
+            }
+
+            function addRound(addRoundDiv) {
+                var newRoundDiv = document.getElementsByClassName('roundDiv')[0].cloneNode(true);
+                var newRoundNum = addRoundDiv.parentNode.getElementsByClassName('roundDiv').length + 1;
+                newRoundDiv.getElementsByTagName('h6')[0].innerText = 'Round ' + newRoundNum;
+                newRoundDiv.id = 'round' + addRoundDiv.parentNode.parentNode.parentNode.parentNode.getElementsByTagName('h3')[0].innerText.split('Stage ')[1] + addRoundDiv.parentNode.parentNode.getElementsByTagName('h4')[0].innerText.split('Battle ')[1] + newRoundNum + 'Div';
+                addRoundDiv.parentNode.insertBefore(newRoundDiv, addRoundDiv);
+            }
+
+            function removeRound(roundDiv) {
+                if (window.confirm('Remove ' + roundDiv.parentNode.parentNode.parentNode.parentNode.getElementsByTagName('h3')[0].innerText + ' ' + roundDiv.parentNode.parentNode.getElementsByTagName('h4')[0].innerText + ' ' + roundDiv.getElementsByTagName('h6')[0].innerText + '?')) {
+                    roundDiv.remove();
+                }
+            }
+
+            function addBattle(addBattleDiv) {
+                var newBattleDiv = document.getElementsByClassName('battleDiv')[0].cloneNode(true);
+                var newBattleChar = String.fromCharCode(addBattleDiv.parentNode.getElementsByClassName('battleDiv').length + 65);
+                newBattleDiv.getElementsByTagName('h4')[0].innerText = 'Battle ' + newBattleChar;
+                newBattleDiv.id = 'battle' + addBattleDiv.parentNode.parentNode.getElementsByTagName('h3')[0].innerText.split('Stage ')[1] + newBattleChar + 'Div';
+                newBattleDiv.querySelector('button[data-bs-toggle="collapse"]').setAttribute('data-bs-target','#battle' + addBattleDiv.parentNode.parentNode.getElementsByTagName('h3')[0].innerText.split('Stage ')[1] + newBattleChar + 'RoundsDiv');
+                newBattleDiv.getElementsByClassName('roundsDiv')[0].id = 'battle' + addBattleDiv.parentNode.parentNode.getElementsByTagName('h3')[0].innerText.split('Stage ')[1] + newBattleChar + 'RoundsDiv';
+                addBattleDiv.parentNode.insertBefore(newBattleDiv, addBattleDiv);
+            }
+
+            function resetBattle(battleDiv) {
+                if (window.confirm('Reset ' + battleDiv.parentNode.parentNode.getElementsByTagName('h3')[0].innerText + ' ' + battleDiv.getElementsByTagName('h4')[0].innerText + '?')) {
+                    var inputs = battleDiv.getElementsByTagName('input');
+                    inputs[0].value = '';
+                    inputs[1].value = '';
+                    for (var i = 2; i < inputs.length; i++) {
+                        inputs[i].value = 0;
+                    }
+                    var sliderDisplays = battleDiv.getElementsByTagName('p');
+                    for (var i = 1; i < sliderDisplays.length; i++) {
+                        sliderDisplays[i].innerText = 0;
+                    }
+                    var voteDisplays = battleDiv.getElementsByTagName('h5');
+                    voteDisplays[0].innerText = 0;
+                    voteDisplays[1].innerText = 'null';
+                }
+            }
+
+            function removeBattle(battleDiv) {
+                if (window.confirm('Remove ' + battleDiv.parentNode.parentNode.getElementsByTagName('h3')[0].innerText + ' ' + battleDiv.getElementsByTagName('h4')[0].innerText + '?')) {
+                    battleDiv.remove();
+                }
+            }
+
+            function addStage(addStageDiv) {
+                    var newStageDiv = document.getElementsByClassName('stageDiv')[0].cloneNode(true);
+                    var newStageNum = addStageDiv.parentNode.getElementsByClassName('stageDiv').length;
+                    newStageDiv.getElementsByTagName('h3')[0].innerText = 'Stage ' + newStageNum;
+                    newStageDiv.id = 'stage' + newStageNum + 'Div';
+                    newStageDiv.style = 'display: ""';
+                    newStageDiv.querySelector('button[data-bs-toggle="collapse"]').setAttribute('data-bs-target','#stage' + newStageNum + 'BattlesDiv');
+                    newStageDiv.getElementsByClassName('battlesDiv')[0].id = 'stage' + newStageNum + 'BattlesDiv';
+                    newStageDiv.getElementsByClassName('battleDiv')[0].id = 'battle' + newStageNum + 'ADiv';
+                    newStageDiv.querySelectorAll('button[data-bs-toggle="collapse"]')[1].setAttribute('data-bs-target','#battle' + newStageNum + 'ARoundsDiv');
+                    newStageDiv.getElementsByClassName('roundsDiv')[0].id = 'battle' + newStageNum + 'ARoundsDiv';
+                    addStageDiv.parentNode.insertBefore(newStageDiv, addStageDiv);
+            }
+
+            function removeStage(stageDiv) {
+                if (window.confirm('Remove ' + stageDiv.getElementsByTagName('h3')[0].innerText + '?')) {
+                    stageDiv.remove();
+                }
+            }
+
+            // Catch reload or exit page
+            window.onbeforeunload = function() {
+               return '';
+            }
+         </script>
+    </head>
+
+    <body class='container-fluid'>
+        <div class='eventHeader row'>
+            <div class='col-sm-4 offset-sm-4'>
+                <input id='eventNameInput' placeholder='Event Name' onchange='updateName(this);'>
+                <!-- <button onclick='enableNameInput();'>Edit Name</button> -->
+            </div>
+        </div>
+        
+        <div id='stage0Div' class='stageDiv' style='display: none'>
+            <div class='stageHeader row'>
+                <div class='col-sm-1'>
+                    <button class='btn btn-default' data-bs-toggle='collapse' data-bs-target='#stage0BattlesDiv'>v</button>
+                </div>
+                <div class='col-sm-8'>
+                    <h3>Stage 1</h3>
+                </div>
+                <div class='col-sm-3'>
+                    <button class='btn btn-danger' onclick='removeStage(this.parentNode.parentNode.parentNode);'>Remove Stage</button>
+                </div>
+            </div>
+            
+            <div id='stage0BattlesDiv' class='battlesDiv collapse show'>
+                <div id='battle0ADiv' class='battleDiv collapse show'>
+                    <div class='battleHeader'>
+                        <div class='row'>
+                            <div class='col-sm-1'>
+                                <button class='btn btn-default' data-bs-toggle='collapse' data-bs-target='#battle0ARoundsDiv'>v</button>
+                            </div>
+                            <div class='col-sm-5'>
+                                <h4>Battle A</h4>
+                            </div>
+                            <div class='col-sm-3'>
+                                <button class='btn btn-warning' onclick='resetBattle(this.parentNode.parentNode.parentNode.parentNode);'>Reset Battle</button>
+                            </div>
+                            <div class='col-sm-3'>
+                                <button class='btn btn-danger' onclick='removeBattle(this.parentNode.parentNode.parentNode.parentNode);'>Remove Battle</button>
+                            </div>
+                        </div>
+                        <div class='roundCompetitors row'>
+                            <div class='col-sm-6'>
+                                <input placeholder='left'>
+                            </div>
+                            <div class='col-sm-6'>
+                                <input placeholder='right'>
+                            </div>
+                        </div>
+                    </div>
+                    <div id='battle0ARoundsDiv' class='roundsDiv collapse show'>
+                        <div class='firstDiv'>
+                            <div>
+                                <p>Goes first:</p>
+                            </div>
+                            <div>
+                               <input type='range' min='-1' max='1'>
+                            </div>
+                        </div>
+                        <div id='round0A1Div' class='roundDiv row'>
+                            <div class='col-sm-8'>
+                                <h6>Round 1</h6>
+                                <p>0</p>
+                                <input type='range' min='-3' max='3' oninput='updateSliderDisplay(this);'>
+                            </div>
+                            <div class='col-sm-4'>
+                                <button class='btn btn-warning' onclick='removeRound(this.parentNode.parentNode);'>Remove Round</button>
+                            </div>
+                        </div>
+                        <div>
+                            <button class='btn btn-primary' onclick='addRound(this.parentNode);'>Add Round</button>
+                        </div>
+                        <div class='voteDiv'>
+                            <h5>0</h5>
+                            <h5>null</h5>
+                            <input placeholder='other judge votes'>
+                        </div>
+                        <!-- <div class='tiebreakerDiv'>
+                            <button class='btn btn-primary' onclick='addTiebreaker(this.parentNode);'>Add Tiebreaker</button>
+                        </div> -->
+                    </div>
+                </div>
+                <div class=''>
+                    <button class='btn btn-primary' onclick='addBattle(this.parentNode);'>Add Battle</button>
+                </div>
+            </div>
+        </div>
+
+        <div id='stage1Div' class='stageDiv'>
+            <div class='stageHeader row'>
+                <div class='col-sm-1'>
+                    <button class='btn btn-default' data-bs-toggle='collapse' data-bs-target='#stage1BattlesDiv'>v</button>
+                </div>
+                <div class='col-sm-8'>
+                    <h3>Stage 1</h3>
+                </div>
+                <div class='col-sm-3'>
+                    <button class='btn btn-danger' onclick='removeStage(this.parentNode.parentNode.parentNode);'>Remove Stage</button>
+                </div>
+            </div>
+
+            <div id='stage1BattlesDiv' class='battlesDiv collapse show'>
+                <div id='battle1ADiv' class='battleDiv collapse show'>
+                    <div class='battleHeader'>
+                        <div class='row'>
+                            <div class='col-sm-1'>
+                                <button class='btn btn-default' data-bs-toggle='collapse' data-bs-target='#battle1ARoundsDiv'>v</button>
+                            </div>
+                            <div class='col-sm-5'>
+                                <h4>Battle A</h4>
+                            </div>
+                            <div class='col-sm-3'>
+                                <button class='btn btn-warning' onclick='resetBattle(this.parentNode.parentNode.parentNode.parentNode);'>Reset Battle</button>
+                            </div>
+                            <div class='col-sm-3'>
+                                <button class='btn btn-danger' onclick='removeBattle(this.parentNode.parentNode.parentNode.parentNode);'>Remove Battle</button>
+                            </div>
+                        </div>
+                        <div class='roundCompetitors row'>
+                            <div class='col-sm-6'>
+                                <input placeholder='left'>
+                            </div>
+                            <div class='col-sm-6'>
+                                <input placeholder='right'>
+                            </div>
+                        </div>
+                    </div>
+                    <div id='battle1ARoundsDiv' class='roundsDiv collapse show'>
+                        <div class='firstDiv'>
+                            <div>
+                                <p>Goes first:</p>
+                            </div>
+                            <div>
+                               <input type='range' min='-1' max='1'>
+                            </div>
+                        </div>
+                        <div id='round1A1Div' class='roundDiv row'>
+                            <div class='col-sm-8'>
+                                <h6>Round 1</h6>
+                                <p>0</p>
+                                <input type='range' min='-3' max='3' oninput='updateSliderDisplay(this);'>
+                            </div>
+                            <div class='col-sm-4'>
+                                <button class='btn btn-warning' onclick='removeRound(this.parentNode.parentNode);'>Remove Round</button>
+                            </div>
+                        </div>
+                        <div>
+                            <button class='btn btn-primary' onclick='addRound(this.parentNode);'>Add Round</button>
+                        </div>
+                        <div class='voteDiv'>
+                            <h5>0</h5>
+                            <h5>null</h5>
+                            <input placeholder='other judge votes'>
+                        </div>
+                        <!-- <div class='tiebreakerDiv'>
+                            <button class='btn btn-primary' onclick='addTiebreaker(this.parentNode);'>Add Tiebreaker</button>
+                        </div> -->
+                    </div>
+                </div>
+                <div class=''>
+                    <button class='btn btn-primary' onclick='addBattle(this.parentNode);'>Add Battle</button>
+                </div>
+            </div>
+        </div>
+
+        <div class=''>
+            <button class='btn btn-primary' onclick='addStage(this.parentNode);'>Add Stage</button>
+        </div>
+    </body>
+
+</html>
